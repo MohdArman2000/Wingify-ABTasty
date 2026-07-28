@@ -201,9 +201,26 @@
 </script>
 	 	  <script id="jqueryLib" class="external-script" src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
 	<meta http-equiv="Accept-CH" content="Sec-CH-UA, Sec-CH-UA-Platform, Sec-CH-UA-Mobile, Sec-CH-UA-Full-Version, Sec-CH-UA-Model, Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Platform-Version, Sec-CH-UA-Full-Version-List" id="acceptChMeta" class="meta-tag">
-<!-- Start VWO SmartCode --> 
-<script src="https://dev.visualwebsiteoptimizer.com/tags/1261159.js"></script> 
-<!-- End VWO SmartCode -->
+   <script type="text/javascript" src="https://try.abtasty.com/a64aec060ea3464f9caeef6d883abc50.js"></script>
+	<script id="vwoLoaderScript" class="inline-script">
+(function () {
+  const params = new URLSearchParams(window.location.search);
+
+  const accountId = params.get('id');
+  const path = params.get('path') || 'tag';
+
+  if (!accountId) {
+    console.warn('VWO account id missing in URL');
+    return;
+  }
+
+  const script = document.createElement('script');
+  script.src = `https://dev.visualwebsiteoptimizer.com/${path}/${accountId}.js`;
+  script.async = true;
+
+  document.head.appendChild(script);
+})();
+</script>
   
 	  <script id="domReadyScript" class="inline-script">
         document.addEventListener("DOMContentLoaded", function(event) {
