@@ -2,6 +2,14 @@
   <head>
     <title>My Website</title>
     <style>
+      html,
+      body {
+        min-height: 100%;
+      }
+      body {
+        margin: 0;
+        background: #fff4f4;
+      }
       #contact_us,
       #about,
       #suggestions {
@@ -123,11 +131,83 @@
         width: 95%;
         max-width: 1100px;
       }
-      .dynamic-controls {
+      .dynamic-lab-intro {
+        text-align: center;
+        margin: 0 0 18px;
+        color: #444;
+        line-height: 1.5;
+      }
+      .dynamic-lab-toolbar {
         display: flex;
         flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 18px;
+        padding: 12px 14px;
+        border: 1px solid #c7d2fe;
+        border-radius: 8px;
+        background: #eef2ff;
+      }
+      .dynamic-lab-status {
+        margin: 0;
+        color: #312e81;
+        font-size: 0.95rem;
+        font-weight: 600;
+      }
+      .dynamic-lab-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 16px;
+      }
+      .dynamic-lab-card {
+        display: flex;
+        flex-direction: column;
         gap: 10px;
-        margin-bottom: 16px;
+        padding: 16px;
+        border: 1px solid #cbd5e1;
+        border-radius: 10px;
+        background: #f8fafc;
+        text-align: left;
+      }
+      .dynamic-lab-card h3 {
+        margin: 0;
+        font-size: 1.05rem;
+        color: #0f172a;
+      }
+      .dynamic-lab-hint {
+        margin: 0;
+        color: #475569;
+        font-size: 0.88rem;
+        line-height: 1.45;
+      }
+      .dynamic-lab-assert {
+        margin: 0;
+        padding: 8px 10px;
+        border-radius: 6px;
+        background: #fff;
+        border: 1px dashed #94a3b8;
+        font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+        font-size: 0.78rem;
+        color: #334155;
+        white-space: pre-wrap;
+      }
+      .dynamic-lab-triggers {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+      .dynamic-lab-mount {
+        min-height: 44px;
+        padding: 10px;
+        border: 1px dashed #93c5fd;
+        border-radius: 8px;
+        background: #fff;
+      }
+      .dynamic-lab-mount:empty::before {
+        content: attr(data-empty-label);
+        color: #94a3b8;
+        font-size: 0.85rem;
       }
       .dynamic-btn {
         padding: 8px 14px;
@@ -136,7 +216,7 @@
         background: #1d4ed8;
         color: #fff;
         cursor: pointer;
-        font-size: 0.95rem;
+        font-size: 0.92rem;
       }
       .dynamic-btn-secondary {
         background: #64748b;
@@ -147,50 +227,231 @@
       .dynamic-btn-created {
         background: #0f766e;
       }
-      .dynamic-status {
-        min-height: 1.3em;
-        margin: 0 0 14px;
-        color: #334155;
-        font-size: 0.95rem;
-      }
-      .dynamic-output {
-        min-height: 80px;
-        padding: 14px;
-        border: 1px dashed #94a3b8;
-        border-radius: 8px;
-        background: #f8fafc;
-      }
-      .dynamic-item {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 10px;
-        margin-bottom: 10px;
-        padding: 10px 12px;
-        border: 1px solid #cbd5e1;
-        border-radius: 6px;
-        background: #fff;
-      }
-      .dynamic-item-text {
+      .dynamic-popup-form,
+      .dynamic-dropdown,
+      .dynamic-select-wrap,
+      .dynamic-list,
+      .dynamic-delayed-box,
+      .dynamic-condition-box,
+      .dynamic-accordion-panel,
+      .dynamic-nested-card,
+      .dynamic-search-results,
+      .dynamic-radio-group,
+      .dynamic-success-banner {
         margin: 0;
-        color: #0f172a;
-      }
-      .dynamic-hidden-panel {
-        display: none;
-        margin-top: 14px;
-        padding: 14px;
+        padding: 12px;
         border: 1px solid #86efac;
         border-radius: 8px;
         background: #f0fdf4;
       }
-      .dynamic-hidden-panel.is-visible {
-        display: block;
-      }
-      .dynamic-created-buttons {
+      .dynamic-popup-form .form-row,
+      .dynamic-radio-row {
         display: flex;
-        flex-wrap: wrap;
+        align-items: center;
         gap: 8px;
-        margin-top: 12px;
+        margin-bottom: 8px;
+      }
+      .dynamic-popup-form label {
+        min-width: 70px;
+        font-weight: 600;
+        font-size: 0.9rem;
+      }
+      .dynamic-popup-form input,
+      .dynamic-search-input,
+      .dynamic-condition-input,
+      .dynamic-native-select {
+        flex: 1;
+        padding: 6px 8px;
+        border: 1px solid #94a3b8;
+        border-radius: 4px;
+      }
+      .dynamic-dropdown {
+        position: relative;
+        background: #fff;
+        border-color: #93c5fd;
+      }
+      .dynamic-dropdown-menu {
+        list-style: none;
+        margin: 8px 0 0;
+        padding: 6px;
+        border: 1px solid #cbd5e1;
+        border-radius: 6px;
+        background: #fff;
+      }
+      .dynamic-dropdown-option {
+        display: block;
+        width: 100%;
+        text-align: left;
+        padding: 8px 10px;
+        border: none;
+        border-radius: 4px;
+        background: transparent;
+        cursor: pointer;
+      }
+      .dynamic-dropdown-option:hover,
+      .dynamic-dropdown-option.is-selected {
+        background: #dbeafe;
+      }
+      .dynamic-list {
+        list-style: none;
+        background: #fff;
+        border-color: #93c5fd;
+      }
+      .dynamic-list-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+        margin-bottom: 8px;
+        padding: 8px 10px;
+        border: 1px solid #cbd5e1;
+        border-radius: 6px;
+        background: #f8fafc;
+      }
+      .dynamic-tooltip-bubble {
+        display: inline-block;
+        margin-top: 8px;
+        padding: 6px 10px;
+        border-radius: 6px;
+        background: #0f172a;
+        color: #fff;
+        font-size: 0.85rem;
+      }
+      .dynamic-modal-backdrop {
+        position: fixed;
+        inset: 0;
+        z-index: 40;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(15, 23, 42, 0.45);
+      }
+      .dynamic-modal {
+        width: min(420px, calc(100% - 32px));
+        padding: 20px;
+        border-radius: 12px;
+        background: #fff;
+        box-shadow: 0 16px 40px rgba(0, 0, 0, 0.2);
+      }
+      .dynamic-modal h3 {
+        margin: 0 0 8px;
+      }
+      .dynamic-toast {
+        position: fixed;
+        right: 24px;
+        bottom: 24px;
+        z-index: 50;
+        min-width: 220px;
+        padding: 12px 14px;
+        border-radius: 8px;
+        background: #0f766e;
+        color: #fff;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+      }
+      .dynamic-context-menu {
+        position: absolute;
+        z-index: 30;
+        min-width: 160px;
+        padding: 6px;
+        border: 1px solid #cbd5e1;
+        border-radius: 8px;
+        background: #fff;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+      }
+      .dynamic-context-area {
+        min-height: 72px;
+        padding: 12px;
+        border: 1px dashed #f59e0b;
+        border-radius: 8px;
+        background: #fffbeb;
+        color: #92400e;
+        font-size: 0.9rem;
+      }
+      .dynamic-search-result,
+      .dynamic-nested-child {
+        margin-top: 8px;
+        padding: 8px 10px;
+        border: 1px solid #bbf7d0;
+        border-radius: 6px;
+        background: #fff;
+      }
+      .txn-receipt {
+        margin: 40px auto;
+      }
+      .txn-receipt-note {
+        text-align: center;
+        margin: 0 0 18px;
+        color: #444;
+        line-height: 1.5;
+      }
+      .txn-fields {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 12px;
+        margin: 0 0 28px;
+      }
+      .txn-field {
+        margin: 0;
+        padding: 12px;
+        border: 1px solid #cbd5e1;
+        border-radius: 8px;
+        background: #f8fafc;
+      }
+      .txn-field dt {
+        margin: 0 0 6px;
+        font-size: 0.8rem;
+        font-weight: 700;
+        letter-spacing: 0.02em;
+        color: #475569;
+      }
+      .txn-field dd {
+        margin: 0;
+      }
+      .txn-field dd div {
+        font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+        font-size: 1.05rem;
+        font-weight: 700;
+        color: #0f172a;
+      }
+      .txn-items-wrap {
+        overflow-x: auto;
+        margin-bottom: 24px;
+      }
+      .txn-items {
+        width: 100%;
+        border-collapse: collapse;
+        text-align: left;
+      }
+      .txn-items caption {
+        margin-bottom: 10px;
+        font-size: 1.15rem;
+        font-weight: 700;
+        text-align: left;
+        color: #0f172a;
+      }
+      .txn-items th,
+      .txn-items td {
+        padding: 10px 12px;
+        border: 1px solid #cbd5e1;
+      }
+      .txn-items thead th {
+        background: #eef2ff;
+        color: #3730a3;
+      }
+      .txn-items tbody th {
+        font-weight: 600;
+      }
+      .txn-totals-title {
+        margin: 0 0 10px;
+        font-size: 1.15rem;
+      }
+      .txn-totals {
+        margin: 0;
+        padding: 14px 18px 14px 36px;
+        border: 1px solid #bbf7d0;
+        border-radius: 8px;
+        background: #f0fdf4;
+        line-height: 1.7;
       }
     </style>
 	  <script id="cookieScript" class="inline-script">
@@ -200,25 +461,25 @@
   document.cookie = `abc=A123; expires=${expires.toUTCString()}; path=/`;
 </script>
 	 	  <script id="jqueryLib" class="external-script" src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
-	<meta http-equiv="Accept-CH" content="Sec-CH-UA, Sec-CH-UA-Platform, Sec-CH-UA-Mobile, Sec-CH-UA-Full-Version, Sec-CH-UA-Model, Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Platform-Version, Sec-CH-UA-Full-Version-List" id="acceptChMeta" class="meta-tag">
-<script type="text/javascript" src="https://staging-try.abtasty.com/004da0fd6b1447e8834df0d58dd03d50.js"></script>
-	  <script id="vwoLoaderScript" class="inline-script">
+	 <script type="text/javascript" src="https://staging-try.abtasty.com/004da0fd6b1447e8834df0d58dd03d50.js"></script>
+	  <meta http-equiv="Accept-CH" content="Sec-CH-UA, Sec-CH-UA-Platform, Sec-CH-UA-Mobile, Sec-CH-UA-Full-Version, Sec-CH-UA-Model, Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Platform-Version, Sec-CH-UA-Full-Version-List" id="acceptChMeta" class="meta-tag">
+<script id="vwoLoaderScript" class="inline-script">
 (function () {
-  const params = new URLSearchParams(window.location.search);
+  const params = new URLSearchParams(window.location.search);
 
-  const accountId = params.get('id');
-  const path = params.get('path') || 'tag';
+  const accountId = params.get('id');
+  const path = params.get('path') || 'tag';
 
-  if (!accountId) {
-    console.warn('VWO account id missing in URL');
-    return;
-  }
+  if (!accountId) {
+    console.warn('VWO account id missing in URL');
+    return;
+  }
 
-  const script = document.createElement('script');
-  script.src = `https://dev.visualwebsiteoptimizer.com/${path}/${accountId}.js`;
-  script.async = true;
+  const script = document.createElement('script');
+  script.src = `https://edge.wingify.net/${path}/${accountId}.js`;
+  script.async = true;
 
-  document.head.appendChild(script);
+  document.head.appendChild(script);
 })();
 </script>
   
@@ -478,32 +739,263 @@ VWO.push(['onVariationApplied', function (data) {
     </div>
 
     <section id="dynamicElementsSection" class="dynamic-section embedded-feature-section">
-      <h2 id="dynamicElementsTitle" class="embedded-feature-title">Dynamic Elements</h2>
-      <p id="dynamicElementsDesc" class="embedded-feature-desc">
-        Click the buttons below to add new elements into the main document DOM.
+      <h2 id="dynamicElementsTitle" class="embedded-feature-title">Dynamic Elements Testing Lab</h2>
+      <p id="dynamicElementsDesc" class="dynamic-lab-intro">
+        All widgets below are created in the <strong>main document DOM</strong> only after you act.
+        They are not hidden in the page source. Close / hide / clear removes them from the DOM.
       </p>
+      <pre id="dynamicHierarchyGuide" class="hierarchy-guide">Main Document
+  └─ #dynamicElementsSection
+       └─ empty mount nodes
+            └─ form / dropdown / modal / list / tooltip created on activity</pre>
 
-      <div id="dynamicControls" class="dynamic-controls">
-        <button type="button" id="addParagraphBtn" class="dynamic-btn">Add Paragraph</button>
-        <button type="button" id="addButtonBtn" class="dynamic-btn">Add Button</button>
-        <button type="button" id="addCardBtn" class="dynamic-btn">Add Card</button>
-        <button type="button" id="togglePanelBtn" class="dynamic-btn dynamic-btn-secondary">Show Extra Panel</button>
-        <button type="button" id="clearDynamicBtn" class="dynamic-btn dynamic-btn-danger">Clear All</button>
+      <div id="dynamicLabToolbar" class="dynamic-lab-toolbar">
+        <p id="dynamicLabStatus" class="dynamic-lab-status" aria-live="polite">No dynamic elements in the DOM yet.</p>
+        <button type="button" id="dynamicLabClearAllBtn" class="dynamic-btn dynamic-btn-danger">Clear All Dynamic Elements</button>
       </div>
 
-      <p id="dynamicStatus" class="dynamic-status">No dynamic elements yet.</p>
+      <div id="dynamicLabGrid" class="dynamic-lab-grid">
+        <article id="dynamicFormLab" class="dynamic-lab-card">
+          <h3 id="dynamicFormLabTitle">1. Click to render a form</h3>
+          <p id="dynamicFormLabHint" class="dynamic-lab-hint">The form does not exist until you click Show Form.</p>
+          <pre id="dynamicFormLabAssert" class="dynamic-lab-assert">Assert: #dynamicPopupForm is absent until click
+Then: #dynamicFormName, #dynamicFormEmail, #dynamicFormSubmit exist</pre>
+          <div id="dynamicFormTriggers" class="dynamic-lab-triggers">
+            <button type="button" id="dynamicFormShowBtn" class="dynamic-btn">Show Form</button>
+            <button type="button" id="dynamicFormHideBtn" class="dynamic-btn dynamic-btn-secondary">Remove Form</button>
+          </div>
+          <div id="dynamicFormMount" class="dynamic-lab-mount" data-empty-label="Form will render here"></div>
+        </article>
 
-      <div id="dynamicOutput" class="dynamic-output" aria-live="polite"></div>
+        <article id="dynamicDropdownLab" class="dynamic-lab-card">
+          <h3 id="dynamicDropdownLabTitle">2. Click to render a dropdown</h3>
+          <p id="dynamicDropdownLabHint" class="dynamic-lab-hint">The dropdown and its options are created on click, then option nodes appear when opened.</p>
+          <pre id="dynamicDropdownLabAssert" class="dynamic-lab-assert">Assert: #dynamicCustomDropdown is absent until click
+Open: #dynamicDropdownMenu and option buttons are created</pre>
+          <div id="dynamicDropdownTriggers" class="dynamic-lab-triggers">
+            <button type="button" id="dynamicDropdownShowBtn" class="dynamic-btn">Show Dropdown</button>
+            <button type="button" id="dynamicDropdownHideBtn" class="dynamic-btn dynamic-btn-secondary">Remove Dropdown</button>
+          </div>
+          <div id="dynamicDropdownMount" class="dynamic-lab-mount" data-empty-label="Dropdown will render here"></div>
+        </article>
 
-      <div id="dynamicCreatedButtons" class="dynamic-created-buttons"></div>
+        <article id="dynamicSelectLab" class="dynamic-lab-card">
+          <h3 id="dynamicSelectLabTitle">3. Click to render a native select</h3>
+          <p id="dynamicSelectLabHint" class="dynamic-lab-hint">A real &lt;select&gt; with option children is inserted only after click.</p>
+          <pre id="dynamicSelectLabAssert" class="dynamic-lab-assert">Assert: #dynamicNativeSelect is absent until click</pre>
+          <div id="dynamicSelectTriggers" class="dynamic-lab-triggers">
+            <button type="button" id="dynamicSelectShowBtn" class="dynamic-btn">Show Select</button>
+            <button type="button" id="dynamicSelectHideBtn" class="dynamic-btn dynamic-btn-secondary">Remove Select</button>
+          </div>
+          <div id="dynamicSelectMount" class="dynamic-lab-mount" data-empty-label="Select will render here"></div>
+        </article>
 
-      <div id="dynamicExtraPanel" class="dynamic-hidden-panel" hidden>
-        <h3 id="dynamicExtraPanelTitle">Extra Panel</h3>
-        <p id="dynamicExtraPanelText">
-          This panel was hidden and is now visible in the DOM after you clicked the toggle button.
-        </p>
-        <button type="button" id="dynamicExtraPanelBtn" class="dynamic-btn">Panel Button</button>
+        <article id="dynamicModalLab" class="dynamic-lab-card">
+          <h3 id="dynamicModalLabTitle">4. Click to render a modal</h3>
+          <p id="dynamicModalLabHint" class="dynamic-lab-hint">Modal markup is created on open and destroyed on close. Not pre-hidden.</p>
+          <pre id="dynamicModalLabAssert" class="dynamic-lab-assert">Assert: #dynamicModal is absent until Open Modal
+Close removes #dynamicModalBackdrop from the DOM</pre>
+          <div id="dynamicModalTriggers" class="dynamic-lab-triggers">
+            <button type="button" id="dynamicModalOpenBtn" class="dynamic-btn">Open Modal</button>
+          </div>
+        </article>
+
+        <article id="dynamicTooltipLab" class="dynamic-lab-card">
+          <h3 id="dynamicTooltipLabTitle">5. Hover to render a tooltip</h3>
+          <p id="dynamicTooltipLabHint" class="dynamic-lab-hint">Tooltip node is created on mouseenter and removed on mouseleave.</p>
+          <pre id="dynamicTooltipLabAssert" class="dynamic-lab-assert">Assert: #dynamicTooltipBubble is absent until hover</pre>
+          <div id="dynamicTooltipTriggers" class="dynamic-lab-triggers">
+            <button type="button" id="dynamicTooltipTrigger" class="dynamic-btn">Hover Me</button>
+          </div>
+          <div id="dynamicTooltipMount" class="dynamic-lab-mount" data-empty-label="Tooltip will render here"></div>
+        </article>
+
+        <article id="dynamicListLab" class="dynamic-lab-card">
+          <h3 id="dynamicListLabTitle">6. Click to add list items</h3>
+          <p id="dynamicListLabHint" class="dynamic-lab-hint">Each click creates a new &lt;li&gt;. The list itself is created with the first item.</p>
+          <pre id="dynamicListLabAssert" class="dynamic-lab-assert">Assert: #dynamicItemList is absent until first Add Item</pre>
+          <div id="dynamicListTriggers" class="dynamic-lab-triggers">
+            <button type="button" id="dynamicListAddBtn" class="dynamic-btn">Add Item</button>
+          </div>
+          <div id="dynamicListMount" class="dynamic-lab-mount" data-empty-label="List will render here"></div>
+        </article>
+
+        <article id="dynamicDelayLab" class="dynamic-lab-card">
+          <h3 id="dynamicDelayLabTitle">7. Delayed render (wait test)</h3>
+          <p id="dynamicDelayLabHint" class="dynamic-lab-hint">Click starts a 1.5s wait, then the result node is inserted. Use this for waitFor / explicit wait tests.</p>
+          <pre id="dynamicDelayLabAssert" class="dynamic-lab-assert">After click: #dynamicDelaySpinner exists
+After 1.5s: #dynamicDelayedBox exists, spinner is gone</pre>
+          <div id="dynamicDelayTriggers" class="dynamic-lab-triggers">
+            <button type="button" id="dynamicDelayBtn" class="dynamic-btn">Load After Delay</button>
+          </div>
+          <div id="dynamicDelayMount" class="dynamic-lab-mount" data-empty-label="Delayed element will render here"></div>
+        </article>
+
+        <article id="dynamicConditionLab" class="dynamic-lab-card">
+          <h3 id="dynamicConditionLabTitle">8. Conditional render</h3>
+          <p id="dynamicConditionLabHint" class="dynamic-lab-hint">Type <code>open</code> and click Reveal. Wrong text creates an error node instead.</p>
+          <pre id="dynamicConditionLabAssert" class="dynamic-lab-assert">Input "open" → #dynamicConditionBox is created
+Anything else → #dynamicConditionError is created</pre>
+          <div id="dynamicConditionTriggers" class="dynamic-lab-triggers">
+            <input type="text" id="dynamicConditionInput" class="dynamic-condition-input" placeholder='Type "open"' />
+            <button type="button" id="dynamicConditionBtn" class="dynamic-btn">Reveal</button>
+          </div>
+          <div id="dynamicConditionMount" class="dynamic-lab-mount" data-empty-label="Conditional content will render here"></div>
+        </article>
+
+        <article id="dynamicContextLab" class="dynamic-lab-card">
+          <h3 id="dynamicContextLabTitle">9. Right-click context menu</h3>
+          <p id="dynamicContextLabHint" class="dynamic-lab-hint">Right-click the yellow area. Menu nodes are created then removed on outside click.</p>
+          <pre id="dynamicContextLabAssert" class="dynamic-lab-assert">Assert: #dynamicContextMenu is absent until right-click</pre>
+          <div id="dynamicContextArea" class="dynamic-context-area">Right-click here to render a context menu</div>
+        </article>
+
+        <article id="dynamicToastLab" class="dynamic-lab-card">
+          <h3 id="dynamicToastLabTitle">10. Click to render a toast</h3>
+          <p id="dynamicToastLabHint" class="dynamic-lab-hint">Toast is created on click and auto-removed after 3 seconds, or immediately if you dismiss it.</p>
+          <pre id="dynamicToastLabAssert" class="dynamic-lab-assert">Assert: #dynamicToast is absent until click, then gone after dismiss / timeout</pre>
+          <div id="dynamicToastTriggers" class="dynamic-lab-triggers">
+            <button type="button" id="dynamicToastBtn" class="dynamic-btn">Show Toast</button>
+          </div>
+        </article>
+
+        <article id="dynamicAccordionLab" class="dynamic-lab-card">
+          <h3 id="dynamicAccordionLabTitle">11. Accordion panel created on expand</h3>
+          <p id="dynamicAccordionLabHint" class="dynamic-lab-hint">Expand creates panel content. Collapse removes it from the DOM.</p>
+          <pre id="dynamicAccordionLabAssert" class="dynamic-lab-assert">Assert: #dynamicAccordionPanel is absent until Expand</pre>
+          <div id="dynamicAccordionTriggers" class="dynamic-lab-triggers">
+            <button type="button" id="dynamicAccordionToggleBtn" class="dynamic-btn">Expand Panel</button>
+          </div>
+          <div id="dynamicAccordionMount" class="dynamic-lab-mount" data-empty-label="Accordion content will render here"></div>
+        </article>
+
+        <article id="dynamicNestedLab" class="dynamic-lab-card">
+          <h3 id="dynamicNestedLabTitle">12. Nested dynamic elements</h3>
+          <p id="dynamicNestedLabHint" class="dynamic-lab-hint">First click creates a button. Clicking that new button creates a nested card.</p>
+          <pre id="dynamicNestedLabAssert" class="dynamic-lab-assert">Click 1: #dynamicNestedTriggerBtn is created
+Click 2: #dynamicNestedChildCard is created</pre>
+          <div id="dynamicNestedTriggers" class="dynamic-lab-triggers">
+            <button type="button" id="dynamicNestedShowBtn" class="dynamic-btn">Create Nested Trigger</button>
+          </div>
+          <div id="dynamicNestedMount" class="dynamic-lab-mount" data-empty-label="Nested elements will render here"></div>
+        </article>
+
+        <article id="dynamicSearchLab" class="dynamic-lab-card">
+          <h3 id="dynamicSearchLabTitle">13. Search results rendered on submit</h3>
+          <p id="dynamicSearchLabHint" class="dynamic-lab-hint">Results list is created only after Search. Empty query creates a no-results node.</p>
+          <pre id="dynamicSearchLabAssert" class="dynamic-lab-assert">Assert: #dynamicSearchResults is absent until Search</pre>
+          <div id="dynamicSearchTriggers" class="dynamic-lab-triggers">
+            <input type="search" id="dynamicSearchInput" class="dynamic-search-input" placeholder="Type a query" />
+            <button type="button" id="dynamicSearchBtn" class="dynamic-btn">Search</button>
+          </div>
+          <div id="dynamicSearchMount" class="dynamic-lab-mount" data-empty-label="Search results will render here"></div>
+        </article>
+
+        <article id="dynamicRadioLab" class="dynamic-lab-card">
+          <h3 id="dynamicRadioLabTitle">14. Radio group rendered on click</h3>
+          <p id="dynamicRadioLabHint" class="dynamic-lab-hint">Choosing a radio then creates a details box that did not exist before.</p>
+          <pre id="dynamicRadioLabAssert" class="dynamic-lab-assert">Click Show: #dynamicRadioGroup is created
+Select a radio: #dynamicRadioDetails is created</pre>
+          <div id="dynamicRadioTriggers" class="dynamic-lab-triggers">
+            <button type="button" id="dynamicRadioShowBtn" class="dynamic-btn">Show Radio Group</button>
+            <button type="button" id="dynamicRadioHideBtn" class="dynamic-btn dynamic-btn-secondary">Remove Group</button>
+          </div>
+          <div id="dynamicRadioMount" class="dynamic-lab-mount" data-empty-label="Radio group will render here"></div>
+        </article>
       </div>
+
+      <div id="dynamicOverlayHost"></div>
+    </section>
+
+    <!-- These element IDs are intentionally stable for AB Tasty Selector Mode QA. Each value is static visible text and is not supplied by a data layer. -->
+    <section id="abTastySelectorTransaction" class="txn-receipt embedded-feature-section" aria-labelledby="abTastySelectorTransactionTitle">
+      <h2 id="abTastySelectorTransactionTitle" class="embedded-feature-title">AB Tasty Selector Mode Transaction</h2>
+      <p id="abTastySelectorTransactionDesc" class="txn-receipt-note">
+        Static receipt for selector checks. Each transaction value is the only text inside its element.
+      </p>
+      <dl class="txn-fields">
+        <div class="txn-field">
+          <dt id="txn-tid-label">Transaction ID</dt>
+          <dd><div id="txn-tid" aria-labelledby="txn-tid-label">QA-20261026-0003</div></dd>
+        </div>
+        <div class="txn-field">
+          <dt id="txn-tr-label">Transaction revenue</dt>
+          <dd><div id="txn-tr" aria-labelledby="txn-tr-label">3286.00</div></dd>
+        </div>
+        <div class="txn-field">
+          <dt id="txn-icn-label">Total item quantity</dt>
+          <dd><div id="txn-icn" aria-labelledby="txn-icn-label">4</div></dd>
+        </div>
+        <div class="txn-field">
+          <dt id="txn-ts-label">Shipping</dt>
+          <dd><div id="txn-ts" aria-labelledby="txn-ts-label">100.00</div></dd>
+        </div>
+        <div class="txn-field">
+          <dt id="txn-tt-label">Tax</dt>
+          <dd><div id="txn-tt" aria-labelledby="txn-tt-label">486.00</div></dd>
+        </div>
+        <div class="txn-field">
+          <dt id="txn-tc-label">Currency</dt>
+          <dd><div id="txn-tc" aria-labelledby="txn-tc-label">INR</div></dd>
+        </div>
+        <div class="txn-field">
+          <dt id="txn-tcc-label">Coupon code</dt>
+          <dd><div id="txn-tcc" aria-labelledby="txn-tcc-label">QA20</div></dd>
+        </div>
+        <div class="txn-field">
+          <dt id="txn-pm-label">Payment method</dt>
+          <dd><div id="txn-pm" aria-labelledby="txn-pm-label">Card</div></dd>
+        </div>
+        <div class="txn-field">
+          <dt id="txn-sm-label">Shipping method</dt>
+          <dd><div id="txn-sm" aria-labelledby="txn-sm-label">Express</div></dd>
+        </div>
+      </dl>
+      <div class="txn-items-wrap">
+        <table class="txn-items">
+          <caption>Order items</caption>
+          <thead>
+            <tr>
+              <th scope="col">Product</th>
+              <th scope="col">Unit price</th>
+              <th scope="col">Quantity</th>
+              <th scope="col">SKU</th>
+              <th scope="col">Category</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">QA Wireless Keyboard</th>
+              <td>1200.00</td>
+              <td>1</td>
+              <td>QA-KBD-003</td>
+              <td>Accessories</td>
+            </tr>
+            <tr>
+              <th scope="row">QA USB-C Hub</th>
+              <td>600.00</td>
+              <td>2</td>
+              <td>QA-HUB-003</td>
+              <td>Accessories</td>
+            </tr>
+            <tr>
+              <th scope="row">QA Mouse Pad</th>
+              <td>300.00</td>
+              <td>1</td>
+              <td>QA-PAD-003</td>
+              <td>Accessories</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <h3 id="abTastySelectorTransactionTotalsTitle" class="txn-totals-title">Totals</h3>
+      <ul class="txn-totals">
+        <li>Product total: 2700.00</li>
+        <li>Shipping: 100.00</li>
+        <li>Tax: 486.00</li>
+        <li>Transaction revenue: 3286.00</li>
+        <li>Total item quantity: 4</li>
+      </ul>
     </section>
   </main>
 
@@ -807,19 +1299,26 @@ VWO.push(['onVariationApplied', function (data) {
     </script>
 	<script id="dynamicElementsScript" class="inline-script">
         (function () {
-          let dynamicCount = 0;
-          let createdButtonCount = 0;
+          const statusEl = document.getElementById('dynamicLabStatus');
+          const overlayHost = document.getElementById('dynamicOverlayHost');
+          const mounts = {
+            form: document.getElementById('dynamicFormMount'),
+            dropdown: document.getElementById('dynamicDropdownMount'),
+            select: document.getElementById('dynamicSelectMount'),
+            tooltip: document.getElementById('dynamicTooltipMount'),
+            list: document.getElementById('dynamicListMount'),
+            delay: document.getElementById('dynamicDelayMount'),
+            condition: document.getElementById('dynamicConditionMount'),
+            accordion: document.getElementById('dynamicAccordionMount'),
+            nested: document.getElementById('dynamicNestedMount'),
+            search: document.getElementById('dynamicSearchMount'),
+            radio: document.getElementById('dynamicRadioMount')
+          };
 
-          const statusEl = document.getElementById('dynamicStatus');
-          const outputEl = document.getElementById('dynamicOutput');
-          const createdButtonsEl = document.getElementById('dynamicCreatedButtons');
-          const extraPanel = document.getElementById('dynamicExtraPanel');
-          const addParagraphBtn = document.getElementById('addParagraphBtn');
-          const addButtonBtn = document.getElementById('addButtonBtn');
-          const addCardBtn = document.getElementById('addCardBtn');
-          const togglePanelBtn = document.getElementById('togglePanelBtn');
-          const clearDynamicBtn = document.getElementById('clearDynamicBtn');
-          const panelActionBtn = document.getElementById('dynamicExtraPanelBtn');
+          let listItemCount = 0;
+          let delayTimer = null;
+          let toastTimer = null;
+          const dropdownOptions = ['Alpha', 'Beta', 'Gamma', 'Delta'];
 
           function setStatus(message) {
             if (statusEl) {
@@ -827,125 +1326,610 @@ VWO.push(['onVariationApplied', function (data) {
             }
           }
 
-          function updateCountStatus() {
-            const itemCount = outputEl ? outputEl.children.length : 0;
-            const btnCount = createdButtonsEl ? createdButtonsEl.children.length : 0;
+          function clearNode(node) {
+            if (!node) return;
+            while (node.firstChild) {
+              node.removeChild(node.firstChild);
+            }
+          }
+
+          function el(tag, attrs, text) {
+            const node = document.createElement(tag);
+            if (attrs) {
+              Object.keys(attrs).forEach(function (key) {
+                if (key === 'className') {
+                  node.className = attrs[key];
+                } else if (key === 'htmlFor') {
+                  node.htmlFor = attrs[key];
+                } else {
+                  node.setAttribute(key, attrs[key]);
+                }
+              });
+            }
+            if (text != null) {
+              node.textContent = text;
+            }
+            return node;
+          }
+
+          function countDynamicNodes() {
+            const ids = [
+              'dynamicPopupForm',
+              'dynamicFormSuccess',
+              'dynamicCustomDropdown',
+              'dynamicDropdownMenu',
+              'dynamicNativeSelect',
+              'dynamicModalBackdrop',
+              'dynamicTooltipBubble',
+              'dynamicItemList',
+              'dynamicDelaySpinner',
+              'dynamicDelayedBox',
+              'dynamicConditionBox',
+              'dynamicConditionError',
+              'dynamicContextMenu',
+              'dynamicToast',
+              'dynamicAccordionPanel',
+              'dynamicNestedTriggerBtn',
+              'dynamicNestedChildCard',
+              'dynamicSearchResults',
+              'dynamicSearchEmpty',
+              'dynamicRadioGroup',
+              'dynamicRadioDetails'
+            ];
+            return ids.filter(function (id) {
+              return document.getElementById(id);
+            }).length;
+          }
+
+          function refreshStatus(action) {
+            const present = countDynamicNodes();
             setStatus(
-              'Dynamic items: ' + itemCount +
-              ' | Dynamic buttons: ' + btnCount +
-              (extraPanel && !extraPanel.hidden ? ' | Extra panel: visible' : '')
+              (action ? action + ' — ' : '') +
+              (present ? present + ' dynamic widget(s) currently in the DOM.' : 'No dynamic elements in the DOM yet.')
             );
           }
 
-          if (addParagraphBtn && outputEl) {
-            addParagraphBtn.addEventListener('click', function () {
-              dynamicCount += 1;
-              const item = document.createElement('div');
-              item.id = 'dynamicParagraphItem' + dynamicCount;
-              item.className = 'dynamic-item dynamic-paragraph-item';
+          function removeById(id) {
+            const node = document.getElementById(id);
+            if (node) {
+              node.remove();
+              return true;
+            }
+            return false;
+          }
 
-              const text = document.createElement('p');
-              text.id = 'dynamicParagraphText' + dynamicCount;
-              text.className = 'dynamic-item-text';
-              text.textContent = 'New paragraph #' + dynamicCount + ' added to the DOM.';
+          // 1. Form
+          document.getElementById('dynamicFormShowBtn').addEventListener('click', function () {
+            if (document.getElementById('dynamicPopupForm')) {
+              refreshStatus('Form already in the DOM');
+              return;
+            }
+            clearNode(mounts.form);
 
-              const removeBtn = document.createElement('button');
-              removeBtn.id = 'dynamicParagraphRemove' + dynamicCount;
-              removeBtn.className = 'dynamic-btn dynamic-btn-danger';
-              removeBtn.type = 'button';
-              removeBtn.textContent = 'Remove';
-              removeBtn.addEventListener('click', function () {
-                item.remove();
-                updateCountStatus();
+            const form = el('form', { id: 'dynamicPopupForm', class: 'dynamic-popup-form', action: '#' });
+
+            const nameRow = el('div', { id: 'dynamicFormNameRow', class: 'form-row' });
+            nameRow.appendChild(el('label', { id: 'dynamicFormNameLabel', htmlFor: 'dynamicFormName' }, 'Name'));
+            nameRow.appendChild(el('input', {
+              id: 'dynamicFormName',
+              class: 'form-input',
+              type: 'text',
+              name: 'name',
+              placeholder: 'Your name'
+            }));
+
+            const emailRow = el('div', { id: 'dynamicFormEmailRow', class: 'form-row' });
+            emailRow.appendChild(el('label', { id: 'dynamicFormEmailLabel', htmlFor: 'dynamicFormEmail' }, 'Email'));
+            emailRow.appendChild(el('input', {
+              id: 'dynamicFormEmail',
+              class: 'form-input',
+              type: 'email',
+              name: 'email',
+              placeholder: 'you@example.com'
+            }));
+
+            const actions = el('div', { id: 'dynamicFormActions', class: 'form-row' });
+            const submitBtn = el('button', {
+              id: 'dynamicFormSubmit',
+              class: 'dynamic-btn',
+              type: 'submit'
+            }, 'Submit Form');
+            const cancelBtn = el('button', {
+              id: 'dynamicFormCancel',
+              class: 'dynamic-btn dynamic-btn-secondary',
+              type: 'button'
+            }, 'Cancel');
+            actions.appendChild(submitBtn);
+            actions.appendChild(cancelBtn);
+
+            form.appendChild(nameRow);
+            form.appendChild(emailRow);
+            form.appendChild(actions);
+
+            form.addEventListener('submit', function (event) {
+              event.preventDefault();
+              removeById('dynamicFormSuccess');
+              const name = document.getElementById('dynamicFormName');
+              const email = document.getElementById('dynamicFormEmail');
+              const banner = el('p', { id: 'dynamicFormSuccess', class: 'dynamic-success-banner' },
+                'Submitted: ' + (name ? name.value : '') + ' / ' + (email ? email.value : '')
+              );
+              mounts.form.appendChild(banner);
+              refreshStatus('Form submitted; success banner created');
+            });
+
+            cancelBtn.addEventListener('click', function () {
+              clearNode(mounts.form);
+              refreshStatus('Form removed from the DOM');
+            });
+
+            mounts.form.appendChild(form);
+            refreshStatus('Form created in the DOM');
+          });
+
+          document.getElementById('dynamicFormHideBtn').addEventListener('click', function () {
+            clearNode(mounts.form);
+            refreshStatus('Form removed from the DOM');
+          });
+
+          // 2. Custom dropdown
+          function renderDropdownOptions(dropdown) {
+            removeById('dynamicDropdownMenu');
+            const menu = el('ul', { id: 'dynamicDropdownMenu', class: 'dynamic-dropdown-menu', role: 'listbox' });
+            dropdownOptions.forEach(function (label, index) {
+              const item = el('li', { id: 'dynamicDropdownItem' + (index + 1), class: 'dynamic-dropdown-item' });
+              const optionBtn = el('button', {
+                id: 'dynamicDropdownOption' + (index + 1),
+                class: 'dynamic-dropdown-option',
+                type: 'button',
+                'data-value': label.toLowerCase()
+              }, label);
+              optionBtn.addEventListener('click', function () {
+                const toggle = document.getElementById('dynamicDropdownToggle');
+                if (toggle) {
+                  toggle.textContent = label;
+                  toggle.setAttribute('data-selected', label.toLowerCase());
+                }
+                removeById('dynamicDropdownChosen');
+                dropdown.appendChild(el('p', {
+                  id: 'dynamicDropdownChosen',
+                  class: 'dynamic-success-banner'
+                }, 'Selected: ' + label));
+                menu.remove();
+                refreshStatus('Dropdown option selected; menu removed from the DOM');
               });
-
-              item.appendChild(text);
-              item.appendChild(removeBtn);
-              outputEl.appendChild(item);
-              updateCountStatus();
+              item.appendChild(optionBtn);
+              menu.appendChild(item);
             });
+            dropdown.appendChild(menu);
+            refreshStatus('Dropdown option list created in the DOM');
           }
 
-          if (addButtonBtn && createdButtonsEl) {
-            addButtonBtn.addEventListener('click', function () {
-              createdButtonCount += 1;
-              const newBtn = document.createElement('button');
-              newBtn.id = 'dynamicCreatedBtn' + createdButtonCount;
-              newBtn.className = 'dynamic-btn dynamic-btn-created';
-              newBtn.type = 'button';
-              newBtn.textContent = 'New Button #' + createdButtonCount;
-              newBtn.addEventListener('click', function () {
-                setStatus('You clicked dynamic button #' + createdButtonCount);
+          document.getElementById('dynamicDropdownShowBtn').addEventListener('click', function () {
+            if (document.getElementById('dynamicCustomDropdown')) {
+              refreshStatus('Dropdown already in the DOM');
+              return;
+            }
+            clearNode(mounts.dropdown);
+
+            const dropdown = el('div', { id: 'dynamicCustomDropdown', class: 'dynamic-dropdown' });
+            const toggle = el('button', {
+              id: 'dynamicDropdownToggle',
+              class: 'dynamic-btn dynamic-btn-created',
+              type: 'button',
+              'aria-haspopup': 'listbox'
+            }, 'Choose an option');
+
+            toggle.addEventListener('click', function () {
+              if (document.getElementById('dynamicDropdownMenu')) {
+                document.getElementById('dynamicDropdownMenu').remove();
+                refreshStatus('Dropdown menu removed from the DOM');
+              } else {
+                renderDropdownOptions(dropdown);
+              }
+            });
+
+            dropdown.appendChild(toggle);
+            mounts.dropdown.appendChild(dropdown);
+            refreshStatus('Dropdown created in the DOM');
+          });
+
+          document.getElementById('dynamicDropdownHideBtn').addEventListener('click', function () {
+            clearNode(mounts.dropdown);
+            refreshStatus('Dropdown removed from the DOM');
+          });
+
+          // 3. Native select
+          document.getElementById('dynamicSelectShowBtn').addEventListener('click', function () {
+            if (document.getElementById('dynamicNativeSelect')) {
+              refreshStatus('Select already in the DOM');
+              return;
+            }
+            clearNode(mounts.select);
+
+            const wrap = el('div', { id: 'dynamicSelectWrap', class: 'dynamic-select-wrap' });
+            const label = el('label', { id: 'dynamicSelectLabel', htmlFor: 'dynamicNativeSelect' }, 'Choose a city');
+            const select = el('select', { id: 'dynamicNativeSelect', class: 'dynamic-native-select', name: 'city' });
+            ['', 'Delhi', 'Mumbai', 'Bengaluru', 'Pune'].forEach(function (city, index) {
+              const option = el('option', {
+                id: 'dynamicSelectOption' + index,
+                class: 'select-option',
+                value: city.toLowerCase()
+              }, city || 'Select city');
+              select.appendChild(option);
+            });
+            select.addEventListener('change', function () {
+              removeById('dynamicSelectValue');
+              wrap.appendChild(el('p', {
+                id: 'dynamicSelectValue',
+                class: 'dynamic-success-banner'
+              }, 'Select value: ' + select.value));
+              refreshStatus('Select change created a value node');
+            });
+            wrap.appendChild(label);
+            wrap.appendChild(select);
+            mounts.select.appendChild(wrap);
+            refreshStatus('Native select created in the DOM');
+          });
+
+          document.getElementById('dynamicSelectHideBtn').addEventListener('click', function () {
+            clearNode(mounts.select);
+            refreshStatus('Select removed from the DOM');
+          });
+
+          // 4. Modal
+          function closeModal() {
+            clearNode(overlayHost);
+            refreshStatus('Modal removed from the DOM');
+          }
+
+          document.getElementById('dynamicModalOpenBtn').addEventListener('click', function () {
+            if (document.getElementById('dynamicModal')) {
+              refreshStatus('Modal already in the DOM');
+              return;
+            }
+            const backdrop = el('div', { id: 'dynamicModalBackdrop', class: 'dynamic-modal-backdrop' });
+            const modal = el('div', { id: 'dynamicModal', class: 'dynamic-modal', role: 'dialog', 'aria-modal': 'true' });
+            modal.appendChild(el('h3', { id: 'dynamicModalTitle' }, 'Dynamic Modal'));
+            modal.appendChild(el('p', { id: 'dynamicModalText' }, 'This dialog was created after you clicked Open Modal. It was not in the page before.'));
+            const closeBtn = el('button', { id: 'dynamicModalCloseBtn', class: 'dynamic-btn dynamic-btn-secondary', type: 'button' }, 'Close Modal');
+            closeBtn.addEventListener('click', closeModal);
+            modal.appendChild(closeBtn);
+            backdrop.appendChild(modal);
+            backdrop.addEventListener('click', function (event) {
+              if (event.target === backdrop) {
+                closeModal();
+              }
+            });
+            overlayHost.appendChild(backdrop);
+            refreshStatus('Modal created in the DOM');
+          });
+
+          // 5. Tooltip
+          const tooltipTrigger = document.getElementById('dynamicTooltipTrigger');
+          tooltipTrigger.addEventListener('mouseenter', function () {
+            if (document.getElementById('dynamicTooltipBubble')) return;
+            mounts.tooltip.appendChild(el('span', {
+              id: 'dynamicTooltipBubble',
+              class: 'dynamic-tooltip-bubble',
+              role: 'tooltip'
+            }, 'I was created on hover'));
+            refreshStatus('Tooltip created in the DOM');
+          });
+          tooltipTrigger.addEventListener('mouseleave', function () {
+            removeById('dynamicTooltipBubble');
+            refreshStatus('Tooltip removed from the DOM');
+          });
+          tooltipTrigger.addEventListener('focus', function () {
+            if (document.getElementById('dynamicTooltipBubble')) return;
+            mounts.tooltip.appendChild(el('span', {
+              id: 'dynamicTooltipBubble',
+              class: 'dynamic-tooltip-bubble',
+              role: 'tooltip'
+            }, 'I was created on focus'));
+            refreshStatus('Tooltip created in the DOM');
+          });
+          tooltipTrigger.addEventListener('blur', function () {
+            removeById('dynamicTooltipBubble');
+            refreshStatus('Tooltip removed from the DOM');
+          });
+
+          // 6. List items
+          document.getElementById('dynamicListAddBtn').addEventListener('click', function () {
+            let list = document.getElementById('dynamicItemList');
+            if (!list) {
+              list = el('ul', { id: 'dynamicItemList', class: 'dynamic-list' });
+              mounts.list.appendChild(list);
+            }
+            listItemCount += 1;
+            const item = el('li', {
+              id: 'dynamicListItem' + listItemCount,
+              class: 'dynamic-list-item'
+            });
+            item.appendChild(el('span', {
+              id: 'dynamicListItemText' + listItemCount
+            }, 'Dynamic item #' + listItemCount));
+            const removeBtn = el('button', {
+              id: 'dynamicListItemRemove' + listItemCount,
+              class: 'dynamic-btn dynamic-btn-danger',
+              type: 'button'
+            }, 'Remove');
+            removeBtn.addEventListener('click', function () {
+              item.remove();
+              if (list && !list.children.length) {
+                list.remove();
+              }
+              refreshStatus('List item removed from the DOM');
+            });
+            item.appendChild(removeBtn);
+            list.appendChild(item);
+            refreshStatus('List item #' + listItemCount + ' created in the DOM');
+          });
+
+          // 7. Delayed render
+          document.getElementById('dynamicDelayBtn').addEventListener('click', function () {
+            if (delayTimer) {
+              clearTimeout(delayTimer);
+              delayTimer = null;
+            }
+            clearNode(mounts.delay);
+            mounts.delay.appendChild(el('p', {
+              id: 'dynamicDelaySpinner',
+              class: 'dynamic-lab-hint'
+            }, 'Loading… wait 1.5 seconds'));
+            refreshStatus('Spinner created; delayed box not in DOM yet');
+
+            delayTimer = setTimeout(function () {
+              removeById('dynamicDelaySpinner');
+              const box = el('div', { id: 'dynamicDelayedBox', class: 'dynamic-delayed-box' });
+              box.appendChild(el('p', { id: 'dynamicDelayedText' }, 'This node appeared after 1.5 seconds.'));
+              const lateBtn = el('button', {
+                id: 'dynamicDelayedActionBtn',
+                class: 'dynamic-btn dynamic-btn-created',
+                type: 'button'
+              }, 'Delayed Action');
+              lateBtn.addEventListener('click', function () {
+                refreshStatus('Delayed action button clicked');
               });
-              createdButtonsEl.appendChild(newBtn);
-              updateCountStatus();
-            });
+              box.appendChild(lateBtn);
+              mounts.delay.appendChild(box);
+              refreshStatus('Delayed box created in the DOM');
+              delayTimer = null;
+            }, 1500);
+          });
+
+          // 8. Conditional render
+          document.getElementById('dynamicConditionBtn').addEventListener('click', function () {
+            clearNode(mounts.condition);
+            const value = (document.getElementById('dynamicConditionInput').value || '').trim().toLowerCase();
+            if (value === 'open') {
+              const box = el('div', { id: 'dynamicConditionBox', class: 'dynamic-condition-box' });
+              box.appendChild(el('p', { id: 'dynamicConditionText' }, 'Secret panel unlocked. This node was created because the input matched.'));
+              box.appendChild(el('button', {
+                id: 'dynamicConditionActionBtn',
+                class: 'dynamic-btn',
+                type: 'button'
+              }, 'Secret Action'));
+              mounts.condition.appendChild(box);
+              refreshStatus('Condition matched; panel created');
+            } else {
+              mounts.condition.appendChild(el('p', {
+                id: 'dynamicConditionError',
+                class: 'dynamic-lab-hint'
+              }, 'Type exactly "open" to create the secret panel.'));
+              refreshStatus('Condition failed; error node created');
+            }
+          });
+
+          // 9. Context menu
+          const contextArea = document.getElementById('dynamicContextArea');
+          function closeContextMenu() {
+            if (removeById('dynamicContextMenu')) {
+              refreshStatus('Context menu removed from the DOM');
+            }
           }
-
-          if (addCardBtn && outputEl) {
-            addCardBtn.addEventListener('click', function () {
-              dynamicCount += 1;
-              const card = document.createElement('div');
-              card.id = 'dynamicCard' + dynamicCount;
-              card.className = 'dynamic-item dynamic-card-item';
-
-              const title = document.createElement('p');
-              title.id = 'dynamicCardTitle' + dynamicCount;
-              title.className = 'dynamic-item-text';
-              title.textContent = 'Dynamic card #' + dynamicCount;
-
-              const actionBtn = document.createElement('button');
-              actionBtn.id = 'dynamicCardAction' + dynamicCount;
-              actionBtn.className = 'dynamic-btn';
-              actionBtn.type = 'button';
-              actionBtn.textContent = 'Card Action';
-              actionBtn.addEventListener('click', function () {
-                setStatus('Card action clicked on #' + dynamicCount);
+          contextArea.addEventListener('contextmenu', function (event) {
+            event.preventDefault();
+            closeContextMenu();
+            const menu = el('div', { id: 'dynamicContextMenu', class: 'dynamic-context-menu', role: 'menu' });
+            ['Copy', 'Inspect', 'Delete'].forEach(function (label, index) {
+              const itemBtn = el('button', {
+                id: 'dynamicContextItem' + (index + 1),
+                class: 'dynamic-dropdown-option',
+                type: 'button',
+                role: 'menuitem'
+              }, label);
+              itemBtn.addEventListener('click', function () {
+                closeContextMenu();
+                refreshStatus('Context action "' + label + '" chosen');
               });
-
-              card.appendChild(title);
-              card.appendChild(actionBtn);
-              outputEl.appendChild(card);
-              updateCountStatus();
+              menu.appendChild(itemBtn);
             });
-          }
+            menu.style.top = event.pageY + 'px';
+            menu.style.left = event.pageX + 'px';
+            document.body.appendChild(menu);
+            refreshStatus('Context menu created in the DOM');
+          });
+          document.addEventListener('click', function (event) {
+            const menu = document.getElementById('dynamicContextMenu');
+            if (menu && !menu.contains(event.target)) {
+              closeContextMenu();
+            }
+          });
 
-          if (togglePanelBtn && extraPanel) {
-            togglePanelBtn.addEventListener('click', function () {
-              const shouldShow = extraPanel.hidden;
-              extraPanel.hidden = !shouldShow;
-              extraPanel.classList.toggle('is-visible', shouldShow);
-              togglePanelBtn.textContent = shouldShow ? 'Hide Extra Panel' : 'Show Extra Panel';
-              updateCountStatus();
-            });
-          }
+          // 10. Toast
+          document.getElementById('dynamicToastBtn').addEventListener('click', function () {
+            if (toastTimer) {
+              clearTimeout(toastTimer);
+              toastTimer = null;
+            }
+            removeById('dynamicToast');
+            const toast = el('div', { id: 'dynamicToast', class: 'dynamic-toast', role: 'status' });
+            toast.appendChild(el('span', { id: 'dynamicToastText' }, 'Toast created in the DOM'));
+            const dismiss = el('button', {
+              id: 'dynamicToastDismissBtn',
+              class: 'dynamic-btn dynamic-btn-secondary',
+              type: 'button'
+            }, 'Dismiss');
+            dismiss.style.marginLeft = '10px';
+            function dismissToast() {
+              if (toastTimer) {
+                clearTimeout(toastTimer);
+                toastTimer = null;
+              }
+              removeById('dynamicToast');
+              refreshStatus('Toast removed from the DOM');
+            }
+            dismiss.addEventListener('click', dismissToast);
+            toast.appendChild(dismiss);
+            document.body.appendChild(toast);
+            refreshStatus('Toast created in the DOM');
+            toastTimer = setTimeout(dismissToast, 3000);
+          });
 
-          if (panelActionBtn) {
-            panelActionBtn.addEventListener('click', function () {
-              setStatus('Extra panel button clicked');
+          // 11. Accordion
+          const accordionBtn = document.getElementById('dynamicAccordionToggleBtn');
+          accordionBtn.addEventListener('click', function () {
+            if (document.getElementById('dynamicAccordionPanel')) {
+              clearNode(mounts.accordion);
+              accordionBtn.textContent = 'Expand Panel';
+              refreshStatus('Accordion panel removed from the DOM');
+              return;
+            }
+            const panel = el('div', { id: 'dynamicAccordionPanel', class: 'dynamic-accordion-panel' });
+            panel.appendChild(el('p', { id: 'dynamicAccordionText' }, 'Accordion body was created on expand, not un-hidden.'));
+            const innerBtn = el('button', {
+              id: 'dynamicAccordionInnerBtn',
+              class: 'dynamic-btn dynamic-btn-created',
+              type: 'button'
+            }, 'Inner Accordion Button');
+            innerBtn.addEventListener('click', function () {
+              refreshStatus('Inner accordion button clicked');
             });
-          }
+            panel.appendChild(innerBtn);
+            mounts.accordion.appendChild(panel);
+            accordionBtn.textContent = 'Collapse Panel';
+            refreshStatus('Accordion panel created in the DOM');
+          });
 
-          if (clearDynamicBtn) {
-            clearDynamicBtn.addEventListener('click', function () {
-              if (outputEl) {
-                outputEl.innerHTML = '';
+          // 12. Nested dynamic
+          document.getElementById('dynamicNestedShowBtn').addEventListener('click', function () {
+            if (document.getElementById('dynamicNestedTriggerBtn')) {
+              refreshStatus('Nested trigger already in the DOM');
+              return;
+            }
+            clearNode(mounts.nested);
+            const trigger = el('button', {
+              id: 'dynamicNestedTriggerBtn',
+              class: 'dynamic-btn dynamic-btn-created',
+              type: 'button'
+            }, 'Click to create nested card');
+            trigger.addEventListener('click', function () {
+              if (document.getElementById('dynamicNestedChildCard')) {
+                refreshStatus('Nested card already in the DOM');
+                return;
               }
-              if (createdButtonsEl) {
-                createdButtonsEl.innerHTML = '';
-              }
-              if (extraPanel) {
-                extraPanel.hidden = true;
-                extraPanel.classList.remove('is-visible');
-              }
-              if (togglePanelBtn) {
-                togglePanelBtn.textContent = 'Show Extra Panel';
-              }
-              dynamicCount = 0;
-              createdButtonCount = 0;
-              setStatus('All dynamic elements cleared.');
+              const card = el('div', { id: 'dynamicNestedChildCard', class: 'dynamic-nested-card' });
+              card.appendChild(el('p', { id: 'dynamicNestedChildText' }, 'Nested card created by the dynamic button.'));
+              const childBtn = el('button', {
+                id: 'dynamicNestedChildBtn',
+                class: 'dynamic-btn',
+                type: 'button'
+              }, 'Nested Card Button');
+              childBtn.addEventListener('click', function () {
+                refreshStatus('Nested card button clicked');
+              });
+              card.appendChild(childBtn);
+              mounts.nested.appendChild(card);
+              refreshStatus('Nested card created in the DOM');
             });
-          }
+            mounts.nested.appendChild(trigger);
+            refreshStatus('Nested trigger button created in the DOM');
+          });
+
+          // 13. Search results
+          document.getElementById('dynamicSearchBtn').addEventListener('click', function () {
+            clearNode(mounts.search);
+            const query = (document.getElementById('dynamicSearchInput').value || '').trim();
+            if (!query) {
+              mounts.search.appendChild(el('p', {
+                id: 'dynamicSearchEmpty',
+                class: 'dynamic-lab-hint'
+              }, 'No results. Enter a query first.'));
+              refreshStatus('Empty-state node created');
+              return;
+            }
+            const results = el('div', { id: 'dynamicSearchResults', class: 'dynamic-search-results' });
+            results.appendChild(el('p', { id: 'dynamicSearchSummary' }, 'Results for "' + query + '"'));
+            [1, 2, 3].forEach(function (n) {
+              const row = el('div', {
+                id: 'dynamicSearchResult' + n,
+                class: 'dynamic-search-result'
+              }, 'Result ' + n + ' matching ' + query);
+              results.appendChild(row);
+            });
+            mounts.search.appendChild(results);
+            refreshStatus('Search result nodes created in the DOM');
+          });
+
+          // 14. Radio group
+          document.getElementById('dynamicRadioShowBtn').addEventListener('click', function () {
+            if (document.getElementById('dynamicRadioGroup')) {
+              refreshStatus('Radio group already in the DOM');
+              return;
+            }
+            clearNode(mounts.radio);
+            const group = el('div', { id: 'dynamicRadioGroup', class: 'dynamic-radio-group' });
+            ['Plan A', 'Plan B', 'Plan C'].forEach(function (label, index) {
+              const row = el('div', { id: 'dynamicRadioRow' + (index + 1), class: 'dynamic-radio-row' });
+              const radioId = 'dynamicRadioOption' + (index + 1);
+              const radio = el('input', {
+                id: radioId,
+                class: 'form-radio',
+                type: 'radio',
+                name: 'dynamicPlan',
+                value: label.toLowerCase().replace(' ', '-')
+              });
+              radio.addEventListener('change', function () {
+                removeById('dynamicRadioDetails');
+                const details = el('div', { id: 'dynamicRadioDetails', class: 'dynamic-success-banner' });
+                details.appendChild(el('p', { id: 'dynamicRadioDetailsText' }, 'You selected ' + label + '. This details box was created after the change.'));
+                mounts.radio.appendChild(details);
+                refreshStatus('Radio details created in the DOM');
+              });
+              row.appendChild(radio);
+              row.appendChild(el('label', { id: radioId + 'Label', htmlFor: radioId }, label));
+              group.appendChild(row);
+            });
+            mounts.radio.appendChild(group);
+            refreshStatus('Radio group created in the DOM');
+          });
+
+          document.getElementById('dynamicRadioHideBtn').addEventListener('click', function () {
+            clearNode(mounts.radio);
+            refreshStatus('Radio group removed from the DOM');
+          });
+
+          // Clear all
+          document.getElementById('dynamicLabClearAllBtn').addEventListener('click', function () {
+            if (delayTimer) {
+              clearTimeout(delayTimer);
+              delayTimer = null;
+            }
+            if (toastTimer) {
+              clearTimeout(toastTimer);
+              toastTimer = null;
+            }
+            Object.keys(mounts).forEach(function (key) {
+              clearNode(mounts[key]);
+            });
+            clearNode(overlayHost);
+            removeById('dynamicContextMenu');
+            removeById('dynamicToast');
+            listItemCount = 0;
+            accordionBtn.textContent = 'Expand Panel';
+            setStatus('All dynamic elements cleared. Nothing extra remains in the DOM.');
+          });
         })();
     </script>
 
