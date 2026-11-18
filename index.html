@@ -709,7 +709,7 @@ VWO.push(['onVariationApplied', function (data) {
       <section id="shadowDomSection" class="shadow-section embedded-feature-section">
         <h2 id="shadowDomSectionTitle" class="embedded-feature-title">Shadow DOM — 2 Levels</h2>
         <p id="shadowDomSectionDesc" class="embedded-feature-desc">
-          Lives only on the main page (outside iframes).
+          Lives only on the main page (outside iframes). Show dynamic nodes inserts elements that were not in that shadow root.
         </p>
         <pre id="shadowHierarchyGuide" class="hierarchy-guide">Main Document
   └─ Shadow DOM Level 1
@@ -720,7 +720,7 @@ VWO.push(['onVariationApplied', function (data) {
       <section id="iframeSection" class="iframe-section nested-iframe-section embedded-feature-section">
         <h2 id="iframeSectionTitle" class="embedded-feature-title">Iframe — 2 Levels</h2>
         <p id="iframeSectionDesc" class="embedded-feature-desc">
-          Loads a simple page. That page nests a second simple iframe one level deeper.
+          Loads a simple page. That page nests a second simple iframe one level deeper. Show dynamic nodes inserts elements inside that iframe document.
         </p>
         <pre id="iframeHierarchyGuide" class="hierarchy-guide">Main Document
   └─ Iframe Level 1 (simple page)
@@ -1184,6 +1184,20 @@ Select a radio: #dynamicRadioDetails is created</pre>
               .shadow-nested-host {
                 display: block;
               }
+              .shadow-dynamic-mount {
+                margin-top: 12px;
+              }
+              .shadow-dynamic-card {
+                padding: 10px 12px;
+                border: 1px dashed ${accent};
+                border-radius: 8px;
+                background: #fff;
+              }
+              .shadow-dynamic-note {
+                margin: 0 0 8px;
+                color: #0f172a;
+                font-size: 0.92rem;
+              }
             `;
           }
 
@@ -1192,9 +1206,11 @@ Select a radio: #dynamicRadioDetails is created</pre>
               <div id="${prefix}Buttons" class="shadow-buttons">
                 <button type="button" id="${prefix}BtnOne" class="shadow-btn">Click Me</button>
                 <button type="button" id="${prefix}BtnTwo" class="shadow-btn">Say Hello</button>
+                <button type="button" id="${prefix}AddDynamicBtn" class="shadow-btn">Show dynamic nodes</button>
                 <button type="button" id="${prefix}BtnClear" class="shadow-btn shadow-btn-secondary">Clear</button>
               </div>
               <p id="${prefix}Status" class="shadow-status"></p>
+              <div id="${prefix}DynamicMount" class="shadow-dynamic-mount"></div>
               <form id="${prefix}Form" class="shadow-form" action="#">
                 <div id="${prefix}NameRow" class="shadow-form-row">
                   <label id="${prefix}NameLabel" for="${prefix}Name">Name</label>
@@ -1216,11 +1232,18 @@ Select a radio: #dynamicRadioDetails is created</pre>
             const status = shadowRoot.getElementById(prefix + 'Status');
             const btnOne = shadowRoot.getElementById(prefix + 'BtnOne');
             const btnTwo = shadowRoot.getElementById(prefix + 'BtnTwo');
+            const btnDynamic = shadowRoot.getElementById(prefix + 'AddDynamicBtn');
             const btnClear = shadowRoot.getElementById(prefix + 'BtnClear');
             const form = shadowRoot.getElementById(prefix + 'Form');
+            const dynamicMount = shadowRoot.getElementById(prefix + 'DynamicMount');
 
             function setStatus(message) {
               if (status) status.textContent = message;
+            }
+
+            function removeDynamicNodes() {
+              const card = shadowRoot.getElementById(prefix + 'DynamicCard');
+              if (card) card.remove();
             }
 
             if (btnOne) {
@@ -1235,8 +1258,40 @@ Select a radio: #dynamicRadioDetails is created</pre>
               });
             }
 
+            if (btnDynamic && dynamicMount) {
+              btnDynamic.addEventListener('click', function () {
+                if (shadowRoot.getElementById(prefix + 'DynamicCard')) {
+                  setStatus('Dynamic nodes already exist in Shadow Level ' + level);
+                  return;
+                }
+                const card = document.createElement('div');
+                card.id = prefix + 'DynamicCard';
+                card.className = 'shadow-dynamic-card';
+
+                const note = document.createElement('p');
+                note.id = prefix + 'DynamicNote';
+                note.className = 'shadow-dynamic-note';
+                note.textContent = 'Created after click. This note was not in Shadow Level ' + level + ' until now.';
+
+                const extra = document.createElement('button');
+                extra.type = 'button';
+                extra.id = prefix + 'DynamicExtraBtn';
+                extra.className = 'shadow-btn';
+                extra.textContent = 'Dynamic button';
+                extra.addEventListener('click', function () {
+                  setStatus('Dynamic button clicked (Shadow Level ' + level + ')');
+                });
+
+                card.appendChild(note);
+                card.appendChild(extra);
+                dynamicMount.appendChild(card);
+                setStatus('Note and button added inside Shadow Level ' + level);
+              });
+            }
+
             if (btnClear) {
               btnClear.addEventListener('click', function () {
+                removeDynamicNodes();
                 setStatus('');
               });
             }
