@@ -112,11 +112,28 @@
       }
       .nested-iframe {
         width: 100%;
-        height: 360px;
+        height: 420px;
         border: 2px solid #047857;
         border-radius: 8px;
         background: #fff;
         display: block;
+      }
+      .dynamic-mount {
+        margin-bottom: 14px;
+      }
+      .dynamic-card {
+        padding: 10px 12px;
+        border: 1px dashed #1d4ed8;
+        border-radius: 8px;
+        background: #fff;
+      }
+      body.iframe-level-2 .dynamic-card {
+        border-color: #047857;
+      }
+      .dynamic-note {
+        margin: 0 0 8px;
+        color: #0f172a;
+        font-size: 0.92rem;
       }
     </style>
   </head>
@@ -131,9 +148,11 @@
       <div id="iframeL1ButtonsRow" class="buttons-row">
         <button id="iframeL1BtnOne" class="btn" type="button">Button One</button>
         <button id="iframeL1BtnTwo" class="btn" type="button">Button Two</button>
+        <button id="iframeL1AddDynamicBtn" class="btn" type="button">Show dynamic nodes</button>
         <button id="iframeL1BtnClear" class="btn btn-secondary" type="button">Clear</button>
       </div>
       <p id="iframeL1Status" class="status-text"></p>
+      <div id="iframeL1DynamicMount" class="dynamic-mount"></div>
 
       <form id="iframeL1SimpleForm" class="simple-form" action="#">
         <div id="iframeL1NameRow" class="form-row">
@@ -185,8 +204,10 @@
             'iframeL1ButtonsRow',
             'iframeL1BtnOne',
             'iframeL1BtnTwo',
+            'iframeL1AddDynamicBtn',
             'iframeL1BtnClear',
             'iframeL1Status',
+            'iframeL1DynamicMount',
             'iframeL1SimpleForm',
             'iframeL1NameRow',
             'iframeL1NameLabel',
@@ -226,14 +247,17 @@
         if (nestLevel >= 2) {
           if (levelTag) levelTag.textContent = 'Iframe — Level 2';
           if (pageTitle) pageTitle.textContent = 'Simple Page (Deepest)';
-          if (pageHint) pageHint.textContent = 'This is Level 2. Nesting stops here.';
+          if (pageHint) {
+            pageHint.textContent =
+              'This is Level 2. Nesting stops here. Show dynamic nodes inserts elements into this document.';
+          }
           if (nestedBlock) nestedBlock.hidden = true;
         } else {
           if (levelTag) levelTag.textContent = 'Iframe — Level 1';
           if (pageTitle) pageTitle.textContent = 'Simple Page';
           if (pageHint) {
             pageHint.textContent =
-              'Minimal DOM inside the iframe. Level 2 is nested below.';
+              'Minimal DOM inside the iframe. Level 2 is nested below. Show dynamic nodes inserts elements into this document.';
           }
         }
 
@@ -243,8 +267,15 @@
 
         const btnOne = document.getElementById(prefix + 'BtnOne');
         const btnTwo = document.getElementById(prefix + 'BtnTwo');
+        const btnDynamic = document.getElementById(prefix + 'AddDynamicBtn');
         const btnClear = document.getElementById(prefix + 'BtnClear');
         const form = document.getElementById(prefix + 'SimpleForm');
+        const dynamicMount = document.getElementById(prefix + 'DynamicMount');
+
+        function removeDynamicNodes() {
+          const card = document.getElementById(prefix + 'DynamicCard');
+          if (card) card.remove();
+        }
 
         if (btnOne) {
           btnOne.addEventListener('click', function () {
@@ -258,8 +289,40 @@
           });
         }
 
+        if (btnDynamic && dynamicMount) {
+          btnDynamic.addEventListener('click', function () {
+            if (document.getElementById(prefix + 'DynamicCard')) {
+              setStatus('Dynamic nodes already exist in Iframe Level ' + nestLevel);
+              return;
+            }
+            const card = document.createElement('div');
+            card.id = prefix + 'DynamicCard';
+            card.className = 'dynamic-card';
+
+            const note = document.createElement('p');
+            note.id = prefix + 'DynamicNote';
+            note.className = 'dynamic-note';
+            note.textContent = 'Created after click. This note was not in Iframe Level ' + nestLevel + ' until now.';
+
+            const extra = document.createElement('button');
+            extra.type = 'button';
+            extra.id = prefix + 'DynamicExtraBtn';
+            extra.className = 'btn';
+            extra.textContent = 'Dynamic button';
+            extra.addEventListener('click', function () {
+              setStatus('Dynamic button clicked (Iframe Level ' + nestLevel + ')');
+            });
+
+            card.appendChild(note);
+            card.appendChild(extra);
+            dynamicMount.appendChild(card);
+            setStatus('Note and button added inside Iframe Level ' + nestLevel);
+          });
+        }
+
         if (btnClear) {
           btnClear.addEventListener('click', function () {
+            removeDynamicNodes();
             setStatus('');
           });
         }
