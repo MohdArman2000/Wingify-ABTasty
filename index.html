@@ -468,15 +468,28 @@
   const params = new URLSearchParams(window.location.search);
 
   const accountId = params.get('id');
-  const path = params.get('path') || 'tag';
+  const env = (params.get('env') || 'prod').toLowerCase();
+
+  const envPaths = {
+    prod: 'tag',
+    staging: 'tags',
+    testapp: 'cloud-run-test/final'
+  };
 
   if (!accountId) {
     console.warn('VWO account id missing in URL');
     return;
   }
 
+  if (!Object.prototype.hasOwnProperty.call(envPaths, env)) {
+    console.warn(`Invalid VWO environment: ${env}`);
+    return;
+  }
+
+  const path = envPaths[env];
+
   const script = document.createElement('script');
-  script.src = `https://edge.wingify.net/${path}/${accountId}.js`;
+  script.src = `https://edge.wingify.net/${path}/${encodeURIComponent(accountId)}.js`;
   script.async = true;
 
   document.head.appendChild(script);
